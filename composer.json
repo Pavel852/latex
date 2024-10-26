@@ -30,7 +30,6 @@
         "docs": "https://github.com/Pavel852/latex/blob/main/README.md"
     },
     "require": {
-        "php": ">=7.2",
-        // Přidejte další závislosti zde, pokud jsou potřeba
+        "php": ">=7.2"
     }
 }
