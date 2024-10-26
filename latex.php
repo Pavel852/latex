@@ -1,4 +1,6 @@
 <?php
+namespace Pavel852\Latex;
+
 /**
  * latex.php
  * Author: PB
