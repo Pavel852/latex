@@ -14,22 +14,50 @@ namespace Pavel852\Latex;
  * Funkce:
  * 1. latex_settings($options)
  *    - Nastaví globální nastavení pro parser.
+ *    - Parametry:
+ *      - $options (řetězec): Nastavení oddělená čárkou, např. 'cz,html' nebo 'us,char'.
+ *    - Příklady použití:
+ *      ```php
+ *      latex_settings('cz,html'); // Nastaví české formátování a výstup speciálních znaků jako HTML entity.
+ *      latex_settings('us,char'); // Nastaví anglické formátování a výstup speciálních znaků jako UTF-8 znaky.
+ *      ```
+ *
  * 2. latex_formula($input)
  *    - Převádí LaTeXový výraz do HTML.
+ *    - Parametry:
+ *      - $input (řetězec): LaTeXový výraz.
+ *    - Příklady použití:
+ *      ```php
+ *      echo latex_formula('E = mc^2');
+ *      echo latex_formula('S = \sum_{n=1}^\infty \frac{1}{n^2}');
+ *      ```
+ *
  * 3. latex_replace($text, $start='<$', $end='$>')
  *    - Nahrazuje v textu LaTeXové výrazy jejich vizuální podobou.
+ *    - Parametry:
+ *      - $text (řetězec): Text obsahující LaTeXové výrazy.
+ *      - $start (řetězec): Počáteční oddělovač (výchozí '<$').
+ *      - $end (řetězec): Koncový oddělovač (výchozí '$>').
+ *    - Příklady použití:
+ *      ```php
+ *      $text = 'Toto je vzorec: <$E = mc^2$>.';
+ *      echo latex_replace($text);
+ *      ```
+ *
  * 4. latex_version()
  *    - Vrací verzi knihovny.
+ *    - Příklad použití:
+ *      ```php
+ *      echo latex_version();
+ *      ```
  */
 
-// Definice globálních proměnných v rámci namespace
 $latex_version = '2.1';
 $latex_global_settings = array(
     'lang' => 'us',
     'output' => 'html', // 'html' nebo 'char'
 );
 
-// Definice funkcí v rámci namespace
 function latex_version() {
     global $latex_version;
     return 'LaTeX PHP Parser Version ' . $latex_version;
@@ -181,7 +209,7 @@ function parse_latex($input, $lang) {
                     }
                 } else {
                     // Jediný znak
-                    $parsedContent = $input[$i] ?? '';
+                    $parsedContent = $input[$i];
                     $i++;
                 }
                 $tag = $char === '^' ? 'sup' : 'sub';
@@ -211,7 +239,7 @@ function parse_latex($input, $lang) {
                     $i += 1 + $denominatorContent['length'];
 
                     // Formátování čísel podle národnostních zvyklostí
-                    if ($lang === 'cz') {
+                    if ($lang == 'cz') {
                         $numerator = format_numbers_cz($numerator);
                         $denominator = format_numbers_cz($denominator);
                     }
@@ -233,19 +261,10 @@ function parse_latex($input, $lang) {
                 $output .= $textContent;
                 $i += 1 + $braceContent['length'];
             }
-        } elseif (
-            ($output_format === 'html' && substr($input, $i, 5) === '&sum;') ||
-            ($output_format !== 'html' && substr($input, $i, 1) === '∑')
-        ) {
+        } elseif (substr($input, $i, 5) === ($output_format == 'html' ? '&sum;' : '∑')) {
             // Summa
-            if ($output_format === 'html') {
-                $sumSymbol = '&sum;';
-                $i += 5;
-            } else {
-                $sumSymbol = '∑';
-                $i += 1;
-            }
-
+            $i += ($output_format == 'html' ? 5 : 1);
+            $sumSymbol = $output_format == 'html' ? '&sum;' : '∑';
             // Zpracování dolního indexu
             if ($i < $length && $input[$i] === '_') {
                 $i++;
@@ -262,17 +281,16 @@ function parse_latex($input, $lang) {
                             $subContent = substr($input, $i, $semicolonPos - $i + 1);
                             $i = $semicolonPos + 1;
                         } else {
-                            $subContent = $input[$i] ?? '';
+                            $subContent = $input[$i];
                             $i++;
                         }
                     } else {
-                        $subContent = $input[$i] ?? '';
+                        $subContent = $input[$i];
                         $i++;
                     }
                     $sumSymbol .= '<sub>' . $subContent . '</sub>';
                 }
             }
-
             // Zpracování horního indexu
             if ($i < $length && $input[$i] === '^') {
                 $i++;
@@ -289,20 +307,20 @@ function parse_latex($input, $lang) {
                             $supContent = substr($input, $i, $semicolonPos - $i + 1);
                             $i = $semicolonPos + 1;
                         } else {
-                            $supContent = $input[$i] ?? '';
+                            $supContent = $input[$i];
                             $i++;
                         }
                     } else {
-                        $supContent = $input[$i] ?? '';
+                        $supContent = $input[$i];
                         $i++;
                     }
                     $sumSymbol .= '<sup>' . $supContent . '</sup>';
                 }
             }
-
             $output .= $sumSymbol;
         } else {
             // Obyčejný znak nebo HTML entita
+            // Kontrola, zda se jedná o HTML entitu
             if ($char === '&') {
                 $semicolonPos = strpos($input, ';', $i);
                 if ($semicolonPos !== false) {
@@ -321,7 +339,7 @@ function parse_latex($input, $lang) {
     }
 
     // Formátování čísel podle národnostních zvyklostí
-    if ($lang === 'cz') {
+    if ($lang == 'cz') {
         $output = format_numbers_cz($output);
     }
 
@@ -360,7 +378,22 @@ function format_numbers_cz($input) {
     }, $input);
 }
 
-function latex_replace($text, $start='<$', $end='$>') {
+/**
+ * Funkce latex_replace
+ * Hledá v textu vzorce uzavřené mezi $start a $end a nahradí je jejich vizuální podobou.
+ *
+ * @param string $text Text obsahující LaTeXové výrazy.
+ * @param string $start Počáteční oddělovač (výchozí '<$').
+ * @param string $end Koncový oddělovač (výchozí '$>').
+ * @return string Text s nahrazenými LaTeXovými výrazy.
+ *
+ * Příklad použití:
+ * ```php
+ * $text = 'Toto je vzorec: <$E = mc^2$>.';
+ * echo latex_replace($text);
+ * ```
+ */
+function latex_replace($text, $start='/*', $end='*/') {
     // Únik speciálních znaků pro regulární výrazy
     $start_escaped = preg_quote($start, '/');
     $end_escaped = preg_quote($end, '/');
@@ -375,30 +408,5 @@ function latex_replace($text, $start='<$', $end='$>') {
     }, $text);
 
     return $result;
-}
-
-// Alias funkcí do globálního prostoru jmen
-namespace {
-    if (!function_exists('latex_version')) {
-        function latex_version() {
-            return \Pavel852\Latex\latex_version();
-        }
-    }
-    if (!function_exists('latex_settings')) {
-        function latex_settings($options) {
-            return \Pavel852\Latex\latex_settings($options);
-        }
-    }
-    if (!function_exists('latex_formula')) {
-        function latex_formula($input) {
-            return \Pavel852\Latex\latex_formula($input);
-        }
-    }
-    if (!function_exists('latex_replace')) {
-        function latex_replace($text, $start='<$', $end='$>') {
-            return \Pavel852\Latex\latex_replace($text, $start, $end);
-        }
-    }
-    // Pokud potřebujete aliasovat i další funkce, přidejte je sem
 }
 ?>
