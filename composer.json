@@ -1,6 +1,8 @@
 {
     "name": "pavel852/latex",
     "description": "A LaTeX integration library for PHP.",
+    "homepage": "https://github.com/Pavel852/latex",
+    "keywords": ["php", "latex", "utf-8"],
     "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
@@ -14,13 +16,25 @@
     "autoload": {
         "psr-4": {
             "Pavel852\\Latex\\": "src/"
-        }
+        },
+        "files": [
+            "latex.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pavel852\\Latex\\": "src/"
+        },
+        "files": [
+            "latex.php"
+        ]
     },
     "authors": [
         {
             "name": "Pavel Bartos",
             "email": "pavel.bartos.pb@gmail.com",
-            "orcid": "https://orcid.org/0009-0001-3558-4312"
+            "orcid": "https://orcid.org/0009-0001-3558-4312",
+            "role": "Developer"
         }
     ],
     "support": {
@@ -31,5 +45,13 @@
     },
     "require": {
         "php": ">=7.2"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php -r \"chmod('./tmp', 0777);\""
+        ]
+    },
+    "config": {
+        "sort-packages": true
     }
 }
