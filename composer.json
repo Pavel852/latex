@@ -5,6 +5,7 @@
     "keywords": ["php", "latex", "utf-8"],
     "type": "library",
     "license": "MIT",
+    "version": "2.1",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "repositories": [
