@@ -1,5 +1,5 @@
 {
-    "name": "pavel852/latex",
+    "name": "Pavel852/latex",
     "description": "A LaTeX integration library for PHP.",
     "homepage": "https://github.com/Pavel852/latex",
     "keywords": ["php", "latex", "utf-8"],
@@ -15,20 +15,9 @@
         }
     ],
     "autoload": {
-        "psr-4": {
-            "Pavel852\\Latex\\": "src/"
-        },
-        "classmap": [
-            "latex.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Pavel852\\Latex\\": "src/"
-        },
-        "files": [
-            "latex.php"
-        ]
+    "classmap": [
+        "/"
+    ]
     },
     "authors": [
         {
