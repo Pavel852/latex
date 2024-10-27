@@ -35,7 +35,7 @@
     },
     "require": {
         "php": ">=7.0",
-        "pavel852/latex": "dev-master"
+        "pavel852/latex": "stable"
     },
     "scripts": {
         "post-install-cmd": [
