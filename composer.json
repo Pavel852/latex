@@ -17,7 +17,7 @@
         "psr-4": {
             "Pavel852\\Latex\\": "src/"
         },
-        "files": [
+        "classmap": [
             "latex.php"
         ]
     },
