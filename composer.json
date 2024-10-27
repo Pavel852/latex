@@ -34,7 +34,7 @@
         "docs": "https://github.com/Pavel852/latex/blob/main/README.md"
     },
     "require": {
-        "php": ">=7.2"
+        "php": ">=7.0"
     },
     "scripts": {
         "post-install-cmd": [
