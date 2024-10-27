@@ -1,50 +1,157 @@
-# LaTeX PHP Parser
 
-This PHP library provides functions to convert LaTeX expressions into HTML with various formatting options. It enables easy conversion and display of LaTeX formulas directly in your HTML output.
+# PHP Templating System - templates.php
 
-## Functions
+`templates.php` is a simple PHP templating system that separates application logic from presentation. The system works with HTML templates containing custom `<tmpl:xxx>` tags and `{variable}` placeholders. It enables dynamic content generation, iteration management, and embedding additional templates into the main template.
 
-### 1. `latex_settings($options)`
-Sets global formatting options for the parser.
-- **Parameters:**
-  - `$options` (string): Comma-separated options like `'cz,html'` or `'us,char'`.
-- **Usage examples:**
-  ```php
-  latex_settings('cz,html'); // Sets Czech formatting and HTML entities
-  latex_settings('us,char'); // Sets English formatting and UTF-8 characters
-  ```
+## Features and Usage
 
-### 2. `latex_formula($input)`
-Converts a LaTeX expression into HTML output.
-- **Parameters:**
-  - `$input` (string): LaTeX expression.
-- **Usage examples:**
-  ```php
-  echo latex_formula('E = mc^2');
-  echo latex_formula('S = \sum_{n=1}^\infty \frac{1}{n^2}');
-  ```
+### Main functions of templates.php library
 
-### 3. `latex_replace($text, $start='/*', $end='*/')`
-Replaces LaTeX expressions in the specified text with their HTML equivalents and removes delimiters.
-- **Parameters:**
-  - `$text` (string): Text containing LaTeX expressions.
-  - `$start` (string): Starting delimiter (default `'/*'`).
-  - `$end` (string): Ending delimiter (default `'*/'`).
-- **Usage examples:**
-  ```php
-  $text = 'Formula: /*E = mc^2*/.';
-  echo latex_replace($text);
-  ```
+1. **`tmpl_open($filename)`**
+   - Loads a template from a file and returns a template object for further manipulation.
+   - Example:
+     ```php
+     <?php
+     $t = tmpl_open("example.html");
+     ?>
+     ```
 
-### 4. `latex_version()`
-Returns the current version of the library.
-- **Usage example:**
-  ```php
-  echo latex_version();
-  ```
+2. **`tmpl_close($t)`**
+   - Closes the template object and frees resources.
+   - Usage:
+     ```php
+     <?php
+     tmpl_close($t);
+     ?>
+     ```
 
-## Practical Examples
-For practical usage examples, see `latex_test1.php`, `latex_test2.php`, and `latex_test3.php`.
+3. **`tmpl_set($t, $path_or_key, $value)`**
+   - Sets a value for a `{variable}` placeholder or tag in the template.
+   - Example:
+     ```php
+     <?php
+     tmpl_set($t, "title", "My Page");
+     tmpl_set($t, "header_text", "Welcome!");
+     ?>
+     ```
 
-## License
-This project is licensed under the MIT License. For more information, see the `LICENSE` file.
+4. **`tmpl_set_array($t, $array)`**
+   - Sets multiple values at once using an associative array.
+   - Example:
+     ```php
+     <?php
+     $data = [
+         "title" => "My Page",
+         "header_text" => "Welcome!",
+         "content" => "This is the page content."
+     ];
+     tmpl_set_array($t, $data);
+     ?>
+     ```
+
+5. **`tmpl_iterate($t, $path)`**
+   - Enables iteration over a specific tag in the template.
+   - Example:
+     ```php
+     <?php
+     tmpl_iterate($t, "menu_items");
+     ?>
+     ```
+
+6. **`tmpl_parse($t, $path = null)`**
+   - Parses the template and returns the resulting HTML.
+   - Example:
+     ```php
+     <?php
+     echo tmpl_parse($t);
+     ?>
+     ```
+
+7. **`tmpl_include($t, $path, $filename)`**
+   - Embeds another template at the specified location in the current template.
+   - Example:
+     ```php
+     <?php
+     tmpl_include($t, "header", "header_template.html");
+     ?>
+     ```
+
+8. **`tmpl_exists($t, $path)`**
+   - Checks if a specific tag or path exists in the template.
+   - Example:
+     ```php
+     <?php
+     if (tmpl_exists($t, "footer")) {
+         tmpl_set($t, "footer", "Footer exists!");
+     }
+     ?>
+     ```
+
+## Usage Examples
+
+### Example 1: Basic Template and Value Insertion
+#### HTML Template - example.html
+```html
+<html>
+<head><title>{title}</title></head>
+<body>
+    <h1>{header_text}</h1>
+    <p>{content}</p>
+</body>
+</html>
+```
+#### PHP Script
+```php
+<?php
+require_once 'templates.php';
+$t = tmpl_open("example.html");
+
+tmpl_set($t, "title", "My Page");
+tmpl_set($t, "header_text", "Welcome!");
+tmpl_set($t, "content", "This is the content of the page.");
+
+echo tmpl_parse($t);
+tmpl_close($t);
+?>
+```
+
+### Example 2: Iteration and Embedding Additional Templates
+#### HTML Template - menu.html
+```html
+<ul>
+    <tmpl:menu_items>
+        <li><a href="{link}">{name}</a></li>
+    </tmpl:menu_items>
+</ul>
+```
+#### PHP Script
+```php
+<?php
+$t = tmpl_open("menu.html");
+$menu_items = [
+    ["name" => "Home", "link" => "/home"],
+    ["name" => "About Us", "link" => "/about"],
+    ["name" => "Contact", "link" => "/contact"]
+];
+tmpl_set_iarray($t, "menu_items", $menu_items);
+echo tmpl_parse($t);
+tmpl_close($t);
+?>
+```
+
+## Author and Contact
+- **Author**: PB
+- **Email**: pavel.bartos.pb@gmail.com
+- https://packagist.org/packages/pavel852/latex
+
+## Composer Setup
+
+1. **Updating Dependencies**: Run `composer update` to update all dependencies as per the project's `composer.json` file.
+2. **Installing the New Package**: Run `composer require pavel852/php-templates` to install the `pavel852/php-templates` package. This package allows for handling HTML templates with ease.
+
+## Usage Instructions
+
+To utilize the package in your project, follow these steps:
+- Add all dependencies by including `require 'vendor/autoload.php';` at the beginning of your PHP file.
+- Import the package with `use pavel852/php-templates;` to access its functionalities.
+- You can open a template using `$t = tmpl_open('xxx.html');`, where `xxx.html` is the HTML template file you want to work with.
