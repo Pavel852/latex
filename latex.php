@@ -1,5 +1,5 @@
 <?php
-namespace Pavel852\Latex;
+//namespace Pavel852\Latex;
 $g_latex_version='2.1';
 
 /**
