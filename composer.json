@@ -5,7 +5,6 @@
     "keywords": ["php", "latex", "utf-8"],
     "type": "library",
     "license": "MIT",
-    "version": "2.1.0",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "repositories": [
@@ -34,8 +33,7 @@
         "docs": "https://github.com/Pavel852/latex/blob/main/README.md"
     },
     "require": {
-        "php": ">=7.0",
-        "pavel852/latex": "^1.0
+        "php": ">=7.0"        
     },
     "scripts": {
         "post-install-cmd": [
