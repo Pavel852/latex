@@ -34,7 +34,8 @@
         "docs": "https://github.com/Pavel852/latex/blob/main/README.md"
     },
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.0",
+        "pavel852/latex": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
