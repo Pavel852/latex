@@ -15,9 +15,9 @@
         }
     ],
 "autoload": {
-        "files": [
-            "latex.php"
-        ]
+        "psr-4": {
+            "latex\\": ""
+        }
     },
     "authors": [
         {
