@@ -14,15 +14,10 @@
             "url": "https://github.com/Pavel852/latex"
         }
     ],
-    "autoload": {
-    "classmap": [
-        "/"
-    ]
-    },
-    "autoload-dev": {
-    "classmap": [
-        "/"
-    ]
+"autoload": {
+        "files": [
+            "latex.php"
+        ]
     },
     "authors": [
         {
