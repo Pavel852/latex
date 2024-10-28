@@ -1,5 +1,4 @@
 <?php
-
 /**
  * latex.php
  * Author: PB
@@ -357,30 +356,38 @@ class Latex {
     }
 }
 
-// Globální instance třídy Latex pro použití ve funkcích
-$latex_instance = new Latex();
+/**
+ * Singleton funkce pro získání instance třídy Latex
+ */
+function get_latex_instance() {
+    static $latex_instance = null;
+    if ($latex_instance === null) {
+        $latex_instance = new Latex();
+    }
+    return $latex_instance;
+}
 
 /**
  * Globální funkce pro zpětnou kompatibilitu
  */
 
 function latex_settings($options) {
-    global $latex_instance;
+    $latex_instance = get_latex_instance();
     $latex_instance->settings($options);
 }
 
 function latex_formula($input) {
-    global $latex_instance;
+    $latex_instance = get_latex_instance();
     return $latex_instance->formula($input);
 }
 
 function latex_replace($text, $start='<$', $end='$>') {
-    global $latex_instance;
+    $latex_instance = get_latex_instance();
     return $latex_instance->replace($text, $start, $end);
 }
 
 function latex_version() {
-    global $latex_instance;
+    $latex_instance = get_latex_instance();
     return $latex_instance->version();
 }
 
