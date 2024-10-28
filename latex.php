@@ -5,7 +5,7 @@
  * Author: PB
  * Email: pavel.bartos.pb@gmail.com
  * Year: 10/2024
- * Version: 3.0
+ * Version: 3.1
  *
  * Popis:
  * Tato knihovna poskytuje třídu Latex pro převod LaTeXových výrazů do HTML pomocí PHP.
@@ -19,7 +19,7 @@
  */
 
 class Latex {
-    private $version = '3.0';
+    private $version = '3.1';
     private $settings = array(
         'lang' => 'us',
         'output' => 'html', // 'html' nebo 'char'
