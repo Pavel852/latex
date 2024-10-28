@@ -13,10 +13,8 @@
             "url": "https://github.com/Pavel852/latex"
         }
     ],
-"autoload": {
-        "psr-4": {
-            "latex\\": ""
-        }
+    "autoload": {
+        "files": ["latex.php"]
     },
     "authors": [
         {
