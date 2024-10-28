@@ -4,7 +4,7 @@
  * Author: PB
  * Email: pavel.bartos.pb@gmail.com
  * Year: 10/2024
- * Version: 3.1
+ * Version: 3.3
  *
  * Popis:
  * Tato knihovna poskytuje třídu Latex pro převod LaTeXových výrazů do HTML pomocí PHP.
@@ -17,8 +17,13 @@
  * Tyto funkce interně využívají instanci třídy Latex.
  */
 
+// Ujistíme se, že není deklarován žádný namespace
+
+// Volitelně přidáme výpis pro kontrolu, že je soubor zahrnut
+// echo "latex.php included\n";
+
 class Latex {
-    private $version = '3.1';
+    private $version = '3.3';
     private $settings = array(
         'lang' => 'us',
         'output' => 'html', // 'html' nebo 'char'
@@ -355,6 +360,8 @@ class Latex {
         return $result;
     }
 }
+
+// Umístíme singleton funkci před globální funkce
 
 /**
  * Singleton funkce pro získání instance třídy Latex
